@@ -18,32 +18,33 @@ public class Generator : MonoBehaviour
     {
         boxCollider = gObj.GetComponent<BoxCollider2D>();
         gObj.GetComponent<SpriteRenderer>().color = Color.grey;
-        StartCoroutine(GenerateTower());
     }
 
-    private IEnumerator GenerateTower()
+    public IEnumerator GenerateTower()
     {
         while (!isEnd)
         {
             gameObj = Instantiate(gObj);
-            gameObj.transform.SetParent(transform,false);
-            gameObj.transform.position = new Vector2(transform.position.x + 
-                + posX * boxCollider.size.x * gObj.transform.localScale.x, 
+            gameObj.transform.SetParent(transform, false);
+            gameObj.transform.position = new Vector2(transform.position.x +
+                +posX * boxCollider.size.x * gObj.transform.localScale.x,
                 transform.position.y + posY * boxCollider.size.y * gObj.transform.localScale.y);
             posX++;
             if (posX >= pos.x)
             {
                 posX = 0;
                 posY++;
-            }
-            if (posY >= pos.y)
-            {
-                SetEnd();
+                if (posY >= pos.y)
+                {
+                    isEnd = true;
+                    yield return new WaitForSeconds(2);
+                    contr.TurnOn();
+                }
+                break;
             }
             yield return new WaitForSeconds(seconds);
+            
         }
-        yield return new WaitForSeconds(2);
-        contr.TurnOn();
     }
 
 
@@ -52,8 +53,4 @@ public class Generator : MonoBehaviour
         return pos;
     }
 
-    public void SetEnd()
-    {
-        isEnd = true;
-    }
 }
