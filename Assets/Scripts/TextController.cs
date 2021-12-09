@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TextController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class TextController : MonoBehaviour
     }
     private void Update()
     {
-        ShowFinishText();
+        StartCoroutine(ShowFinishText());
         
     }
     private IEnumerator StartText()
@@ -37,16 +38,14 @@ public class TextController : MonoBehaviour
 
     }
 
-    private void ShowFinishText()
+    private IEnumerator ShowFinishText()
     {
         if (box.enabled)
         {
             text.text = loseController.GetWin() ? "You win!" : "You lose!";
+            yield return new WaitForSeconds(3);
+            SceneManager.LoadScene("Restart");
         }
     }
 
-    private void ShowStartText()
-    {
-
-    }
 }
